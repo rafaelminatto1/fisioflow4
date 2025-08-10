@@ -1,0 +1,30 @@
+# ---- build
+FROM node:20-alpine AS builder
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY frontend/package*.json ./
+RUN npm ci
+
+COPY frontend ./
+# se você usa envs no build, garanta que o NEXT_PUBLIC_API_URL esteja setado no Railway/Compose
+RUN npm run build
+
+# ---- run
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000
+
+# precisamos do node_modules em runtime (sem devDeps)
+COPY --from=builder /app/package*.json ./
+RUN npm ci --omit=dev
+
+# copia build e arquivos necessários
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.js ./next.config.js
+
+EXPOSE 3000
+CMD ["node","node_modules/next/dist/bin/next","start","-p","3000"]

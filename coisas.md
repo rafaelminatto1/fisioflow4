@@ -1,1 +1,5 @@
-claude mcp add firecrawl -e FIRECRAWL_API_KEY=fc-57fa8bb060c849fba950b27f27815afd -- npx -y firecrawl-mcp
+NEON_PROJECT_ID
+billowing-bonus-91387371
+
+ NEON_API_KEY
+ napi_keqqkf70hi6nlpm34ozuudfxrnaq57zxigwm10hefhr123xcswn4yudzk5347315

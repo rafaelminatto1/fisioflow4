@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["python310", "pip"]
+
+[phases.install]
+cmd = "pip install -r requirements.txt"
+
+[phases.build]
+cmd = "echo 'Build phase completed'"
+
+[start]
+cmd = "python -m gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 30"
+
+[variables]
+FLASK_ENV = "production"
+PYTHONPATH = "/app"

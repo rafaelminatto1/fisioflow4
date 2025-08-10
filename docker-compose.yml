@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: fisioflow_postgres
+    environment:
+      POSTGRES_DB: fisioflow_dev
+      POSTGRES_USER: fisioflow
+      POSTGRES_PASSWORD: fisioflow123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fisioflow_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fisioflow -d fisioflow_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis para cache e sessões
+  redis:
+    image: redis:7-alpine
+    container_name: fisioflow_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fisioflow_network
+    command: redis-server --appendonly yes --requirepass fisioflow123
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend Flask (modo desenvolvimento)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: fisioflow_backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - DATABASE_URL=postgresql://fisioflow:fisioflow123@postgres:5432/fisioflow_dev
+      - REDIS_URL=redis://:fisioflow123@redis:6379/0
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - JWT_SECRET_KEY=jwt-dev-secret-key
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - fisioflow_network
+    command: python app.py
+
+  # Frontend React (modo desenvolvimento)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: fisioflow_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api/v1
+      - VITE_APP_NAME=FisioFlow
+    depends_on:
+      - backend
+    networks:
+      - fisioflow_network
+    command: npm run dev -- --host 0.0.0.0
+
+  # Adminer para gerenciar banco de dados
+  adminer:
+    image: adminer:4.8.1
+    container_name: fisioflow_adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - fisioflow_network
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: pepa-linha-dark
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  fisioflow_network:
+    driver: bridge
+
+# Configurações para diferentes ambientes
+# Para produção, use docker-compose.prod.yml como override

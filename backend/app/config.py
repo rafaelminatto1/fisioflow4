@@ -13,8 +13,12 @@ class Config:
     # Configurações básicas
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     
-    # Banco de dados
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///fisioflow_dev.db'
+    # Banco de dados - Railway pode usar NEON_DATABASE_URL
+    SQLALCHEMY_DATABASE_URI = (
+        os.environ.get('DATABASE_URL') or 
+        os.environ.get('NEON_DATABASE_URL') or 
+        'sqlite:///fisioflow_dev.db'
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
@@ -81,8 +85,8 @@ class ProductionConfig(Config):
     if not os.environ.get('SECRET_KEY'):
         raise ValueError("SECRET_KEY deve ser definida em produção")
     
-    if not os.environ.get('DATABASE_URL'):
-        raise ValueError("DATABASE_URL deve ser definida em produção")
+    if not (os.environ.get('DATABASE_URL') or os.environ.get('NEON_DATABASE_URL')):
+        raise ValueError("DATABASE_URL ou NEON_DATABASE_URL deve ser definida em produção")
     
     if not os.environ.get('ENCRYPTION_KEY'):
         raise ValueError("ENCRYPTION_KEY deve ser definida em produção")

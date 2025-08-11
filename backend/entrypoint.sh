@@ -25,22 +25,11 @@ else
     echo "WARNING: Alembic not found, skipping migrations"
 fi
 
-echo "==> Starting Gunicorn server..."
-echo "Port: ${PORT:-8080}"
-echo "Workers: ${WEB_CONCURRENCY:-3}"
+echo "==> Debug Info..."
+echo "PORT: ${PORT}"
+echo "DATABASE_URL: ${DATABASE_URL}"
+echo "PWD: $(pwd)"
+echo "Files: $(ls -la)"
 
-# Start Gunicorn with proper configuration for Railway
-exec gunicorn \
-    --bind 0.0.0.0:${PORT:-8080} \
-    --workers ${WEB_CONCURRENCY:-3} \
-    --worker-class gthread \
-    --threads 2 \
-    --timeout 120 \
-    --keepalive 5 \
-    --max-requests 1000 \
-    --max-requests-jitter 100 \
-    --preload \
-    --access-logfile - \
-    --error-logfile - \
-    --log-level info \
-    "app:create_app()"
+echo "==> Testing simple Flask app..."
+python test_simple.py

@@ -38,5 +38,5 @@ EXPOSE $PORT
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:$PORT/health || exit 1
 
-# Test with simple Flask app first
-CMD ["sh", "-c", "python test_simple.py"]
+# Use entrypoint with debugging
+CMD ["/app/entrypoint.sh"]

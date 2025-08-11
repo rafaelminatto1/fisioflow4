@@ -5,7 +5,7 @@
     "buildCommand": "pip install -r requirements.txt && python deploy_migrations.py"
   },
   "deploy": {
-    "startCommand": "python -m gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --preload app:app",
+    "startCommand": "python -m gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --preload \"app:create_app()\"",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",

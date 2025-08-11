@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(mkdir:*)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "mcp__neon__create_project",
+      "mcp__neon__run_sql",
+      "mcp__neon__run_sql_transaction"
     ],
     "deny": []
   }

@@ -78,12 +78,24 @@ def register_blueprints(app):
     from app.api.patients import patients_bp
     from app.api.medical_records import medical_records_bp
     from app.api.appointments import appointments_bp
+    from app.api.exercises import exercises_bp
+    from app.api.mentoring import mentoring_bp
+    from app.api.ai import ai_bp
+    from app.api.clinical_protocols import clinical_protocols_bp
+    from app.api.project_management import project_management_bp
+    from app.api.analytics import analytics_bp
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(api_bp, url_prefix='/api/v1')
     app.register_blueprint(patients_bp, url_prefix='/api/v1/patients')
     app.register_blueprint(medical_records_bp, url_prefix='/api/v1/medical-records')
     app.register_blueprint(appointments_bp, url_prefix='/api/v1/appointments')
+    app.register_blueprint(exercises_bp, url_prefix='/api/v1/exercises')
+    app.register_blueprint(mentoring_bp, url_prefix='/api/v1/mentoring')
+    app.register_blueprint(ai_bp, url_prefix='/api/v1/ai')
+    app.register_blueprint(clinical_protocols_bp, url_prefix='/api/v1/protocols')
+    app.register_blueprint(project_management_bp, url_prefix='/api/v1/projects')
+    app.register_blueprint(analytics_bp, url_prefix='/api/v1/analytics')
 
 def register_basic_routes(app):
     """Registra rotas básicas da aplicação"""
@@ -109,7 +121,12 @@ def register_basic_routes(app):
                 'auth': '/api/auth/*',
                 'patients': '/api/v1/patients/*',
                 'appointments': '/api/v1/appointments/*',
-                'exercises': '/api/v1/exercises/*'
+                'exercises': '/api/v1/exercises/*',
+                'mentoring': '/api/v1/mentoring/*',
+                'ai': '/api/v1/ai/*',
+                'protocols': '/api/v1/protocols/*',
+                'projects': '/api/v1/projects/*',
+                'analytics': '/api/v1/analytics/*'
             }
         })
 

@@ -43,6 +43,8 @@ faker==20.1.0
 # Produção
 gunicorn==21.2.0
 python-json-logger==2.0.7
+alembic==1.13.1
+sentry-sdk[flask]==1.38.0
 
 # Análise e documentação
 flask-smorest==0.42.3

@@ -1,0 +1,80 @@
+{
+  "expo": {
+    "name": "FisioFlow Mobile",
+    "slug": "fisioflow-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fisioflow.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Este aplicativo usa o Face ID para autenticação segura.",
+        "NSCameraUsageDescription": "Este aplicativo usa a câmera para capturar exercícios e progresso.",
+        "NSMicrophoneUsageDescription": "Este aplicativo usa o microfone para gravação de notas de voz."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.fisioflow.mobile",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "USE_FINGERPRINT",
+        "USE_BIOMETRIC",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "WAKE_LOCK"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-local-authentication",
+      "expo-notifications",
+      "expo-camera",
+      "expo-av",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true
+          },
+          "ios": {
+            "flipper": false
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    },
+    "owner": "your-expo-username"
+  }
+}

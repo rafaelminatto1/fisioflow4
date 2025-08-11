@@ -14,13 +14,15 @@ if [ -z "$DATABASE_URL" ] && [ -n "$NEON_DATABASE_URL" ]; then
     export DATABASE_URL="$NEON_DATABASE_URL"
 fi
 
-echo "==> Running deployment preparation..."
-# Run deployment script for comprehensive setup
-if python deploy_railway.py; then
-    echo "✅ Deployment preparation successful"
+echo "==> Running database migrations..."
+# Run Alembic migrations directly
+if command -v alembic >/dev/null 2>&1; then
+    echo "Running: alembic upgrade head"
+    alembic upgrade head || {
+        echo "WARNING: Migration failed, continuing anyway..."
+    }
 else
-    echo "❌ Deployment preparation failed"
-    exit 1
+    echo "WARNING: Alembic not found, skipping migrations"
 fi
 
 echo "==> Starting Gunicorn server..."

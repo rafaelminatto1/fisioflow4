@@ -5,7 +5,16 @@
       "Bash(npm install)",
       "mcp__neon__create_project",
       "mcp__neon__run_sql",
-      "mcp__neon__run_sql_transaction"
+      "mcp__neon__run_sql_transaction",
+      "mcp__ide__getDiagnostics",
+      "Bash(rm:*)",
+      "Bash(python:*)",
+      "Bash(npm install:*)",
+      "Bash(railway --version)",
+      "Bash(railway login:*)",
+      "Bash(where railway)",
+      "Bash(C:UsersrafalAppDataRoamingnpmrailway.cmd --version)",
+      "Bash(cmd /c:*)"
     ],
     "deny": []
   }

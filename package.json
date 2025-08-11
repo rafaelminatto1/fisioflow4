@@ -9,21 +9,21 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
-    "dev:frontend": "next dev --turbopack",
     "backend:dev": "cd backend && python -m flask --app app.py --debug run",
     "frontend:dev": "cd frontend && npm run dev", 
     "mobile:dev": "cd mobile && npx expo start",
-    "build": "next build",
     "frontend:build": "cd frontend && npm run build",
-    "start": "next start",
-    "lint": "next lint",
     "frontend:lint": "cd frontend && npm run lint",
     "test": "npm run backend:test && npm run frontend:test",
     "backend:test": "cd backend && python -m pytest",
     "frontend:test": "cd frontend && npm test",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
@@ -36,22 +36,34 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
-    "next": "15.4.6",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "concurrently": "^8.2.0",
     "eslint": "^9",
-    "eslint-config-next": "15.4.6",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "**/*.{ts,tsx}": [
+      "tsc --noEmit"
+    ]
   }
 }

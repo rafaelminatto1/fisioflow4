@@ -6,12 +6,13 @@ import os
 import sys
 import subprocess
 from sqlalchemy import create_engine, text
-from app.config import Config
+from app.config import get_config
 
 def check_database_exists():
     """Check if database tables already exist"""
     try:
-        engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+        config = get_config()
+        engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
         with engine.connect() as conn:
             result = conn.execute(text("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'users')"))
             return result.fetchone()[0]

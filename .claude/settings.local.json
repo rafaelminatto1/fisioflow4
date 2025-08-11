@@ -14,7 +14,8 @@
       "Bash(railway login:*)",
       "Bash(where railway)",
       "Bash(C:UsersrafalAppDataRoamingnpmrailway.cmd --version)",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }
